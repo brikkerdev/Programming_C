@@ -12,7 +12,7 @@ int main()
 {
     int n;
     scanf("%d", &n);
-    struct Student students[n];
+    struct Student* students = malloc(sizeof(struct Student) * n);
 
     for (int i = 0; i < n; i++)
     {
@@ -23,5 +23,5 @@ int main()
     {
         printf("Name: %s\nAge: %d\nGPA: %.1f\n\n", students[i].Name, students[i].Age, students[i].GPA);
     } 
-    
+    free(students);
 }
