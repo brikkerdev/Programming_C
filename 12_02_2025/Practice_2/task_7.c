@@ -22,7 +22,8 @@ int main()
 
     for (int i = 0; i < n; i++)
     {
-        printf("Name: %s\nAge: %d\nGPA: %.1f\n\n", students[i].Name, students[i].Age, students[i].GPA);
+        Student* student = &students[i];
+        printf("Name: %s\nAge: %d\nGPA: %.1f\n\n", student->Name, student->Age, student->GPA);
     } 
 
     free(students);

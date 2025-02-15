@@ -1,24 +1,25 @@
 #include <stdio.h>
+#include <stdlib.h>
 
-struct Date
+typedef struct
 {
     int day;
     int month;
     int year;
-};
+} Date;
 
-struct Event
+typedef struct
 {
     char name[50];
-    struct Date date;
+    Date date;
     char description[200];
-};
+} Event;
 
 int main()
 {
     int n;
     scanf("%d", &n);
-    struct Event events[n];
+    Event* events = malloc(sizeof(Event) * n);
 
     for (int i = 0; i < n; i++)
     {
@@ -29,5 +30,7 @@ int main()
     {
         printf("Event: %s\nDate: %d/%d/%d\nDescription: %s\n\n", events[i].name, events[i].date.day, events[i].date.month, events[i].date.year, events[i].description);
     } 
-    
+
+    free(events);
+    return 0;
 }
