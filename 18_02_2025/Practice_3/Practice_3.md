@@ -96,3 +96,56 @@ SYMBOL TABLE:
 ```
 
 В символьной таблице есть `global_var`, `static_var` с маркером `.data` - это переменные, `print_from_file1` - `.text`, так как это функция (код)
+
+## Диззассемблирование файла `main.o`
+```
+Дизассемблирование раздела .text:
+
+0000000000000000 <main>:
+   0:   55                      push   %rbp
+   1:   48 89 e5                mov    %rsp,%rbp
+   4:   8b 05 00 00 00 00       mov    0x0(%rip),%eax        # a <main+0xa>
+   a:   89 c6                   mov    %eax,%esi
+   c:   48 8d 05 00 00 00 00    lea    0x0(%rip),%rax        # 13 <main+0x13>
+  13:   48 89 c7                mov    %rax,%rdi
+  16:   b8 00 00 00 00          mov    $0x0,%eax
+  1b:   e8 00 00 00 00          call   20 <main+0x20>
+  20:   b8 00 00 00 00          mov    $0x0,%eax
+  25:   e8 00 00 00 00          call   2a <main+0x2a>
+  2a:   b8 00 00 00 00          mov    $0x0,%eax
+  2f:   e8 00 00 00 00          call   34 <main+0x34>
+  34:   b8 00 00 00 00          mov    $0x0,%eax
+  39:   5d                      pop    %rbp
+  3a:   c3                      ret
+```
+
+Как видно из вывода команды, основная функция `main` имеет нулевой адрес.
+
+## Диззассемблирование файла `a.out` (фрагмент)
+```
+0000000000401887 <main>:
+  401887:	55                   	push   %rbp
+  401888:	48 89 e5             	mov    %rsp,%rbp
+  40188b:	8b 05 3f 38 0a 00    	mov    0xa383f(%rip),%eax        # 4a50d0 <global_var>
+  401891:	89 c6                	mov    %eax,%esi
+  401893:	48 8d 05 ca 87 07 00 	lea    0x787ca(%rip),%rax        # 47a064 <__rseq_flags+0x60>
+  40189a:	48 89 c7             	mov    %rax,%rdi
+  40189d:	b8 00 00 00 00       	mov    $0x0,%eax
+  4018a2:	e8 29 31 00 00       	call   4049d0 <_IO_printf>
+  4018a7:	b8 00 00 00 00       	mov    $0x0,%eax
+  4018ac:	e8 74 ff ff ff       	call   401825 <print_from_file1>
+  4018b1:	b8 00 00 00 00       	mov    $0x0,%eax
+  4018b6:	e8 a9 ff ff ff       	call   401864 <print_from_file2>
+  4018bb:	b8 00 00 00 00       	mov    $0x0,%eax
+  4018c0:	5d                   	pop    %rbp
+  4018c1:	c3                   	ret
+  4018c2:	66 2e 0f 1f 84 00 00 	cs nopw 0x0(%rax,%rax,1)
+  4018c9:	00 00 00 
+  4018cc:	66 2e 0f 1f 84 00 00 	cs nopw 0x0(%rax,%rax,1)
+  4018d3:	00 00 00 
+  4018d6:	66 2e 0f 1f 84 00 00 	cs nopw 0x0(%rax,%rax,1)
+  4018dd:	00 00 00 
+
+```
+
+Функция `main` в уже полностью скомпилированном файле имеет другой адрес, так как помимо самой функции там уже проведена линковка и адресация не соответствует объектному файлу до этого.
