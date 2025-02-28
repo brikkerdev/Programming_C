@@ -20,7 +20,7 @@ int main()
     char weather_type[7];
 
     scanf(
-        "%f %f %s", 
+        "%f %f %6s", // теперь мы знаем, что лучше ограничивать число символов при вводе -)
         &weather.temp,
         &weather.humidity,
         weather_type
