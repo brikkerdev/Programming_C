@@ -5,12 +5,13 @@
 
 int main()
 {
-    char message[MAX_LEN] = "ehgru#hello*dasiju";
+    char message[MAX_LEN] = "*#*#*#*#hello*#*#**";
     char s2[] = "#*";
-    size_t start = strcspn(message, s2);
-    char *message_buff = &message[start+1]; 
+    size_t start = strspn(message, s2);
+    char *message_buff = &message[start]; 
     size_t end = strcspn(message_buff, s2);
     message_buff[end] = '\0';
     printf("%s\n", message_buff);
+    printf("Длина сообщения: %d\n", end);
     return 0;
 }
