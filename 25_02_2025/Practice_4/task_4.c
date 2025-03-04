@@ -7,7 +7,7 @@
 int main() {
     char text[MAX_LEN];
     char *code = "launch-2025";
-    scanf("%s", text);
+    scanf("%11s", text);
 
     for(int i = 0; i < 6; i++) {
         text[i] = tolower(text[i]);
