@@ -28,34 +28,39 @@ void reverse(char* text) {
     }
 }
 
-void execute(void (*func)(char*), char* text) {
+typedef void (*oper_t)(char*);
+
+void execute(oper_t func, char* text) {
     func(text);
 }
 
-typedef void (*oper_t)(char*);
+typedef struct {
+    char *name;
+    oper_t func;
+} Command;
 
-oper_t oper[] =
-{
-    upper, lower, reverse
-};
-char* oper_names[] =
-{
-    "upper", "lower", "reverse"
-};
 
 int main() {
+    Command commands[] = {
+        {"upper", upper},
+        {"lower", lower},
+        {"reverse", reverse},
+        {NULL, NULL}
+    };
+
     char text[MAX_LEN];
     printf("Введите текст: ");
-    scanf("%s", text);
+    scanf("%200s", text);
     char com[20];
     do {
         printf("Введите команду: ");
-        scanf("%s", com);
+        scanf("%20s", com);
         
-        for(int i = 0; i < 3; i++) {
-            if (!strcmp(com, oper_names[i])) {
-                execute(oper[i], text);
+        for(int i = 0; commands[i].name; i++) {
+            if (!strcmp(com, commands[i].name)) {
+                execute(commands[i].func, text);
                 printf("Результат: %s\n", text);
+                break;
             }
         }
     } while(strcmp(com, "exit"));
